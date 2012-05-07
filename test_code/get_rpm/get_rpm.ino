@@ -12,7 +12,14 @@ int counter;
 
 void setup(){
   MS_PORT.begin(115200);
-  USB_PORT.begin(115200);  
+  USB_PORT.begin(115200); 
+   for(i=40;i<=43;i++){
+    pinMode(i,OUTPUT);
+   }
+  for(i=2;i<=6;i++){
+   digitalWrite(i,HIGH);
+   delay(500);
+  } 
 }
 
 void loop(){
@@ -45,12 +52,12 @@ void loop(){
   for(i=0;i<152;i++){
     table[i]= MS_PORT.read();
   }
-  rpm= ((table[7]<<8 | table[6]));
+  //rpm= ((table[7]<<8 | table[6]));
   rpm2 = ((table[6]<<8 | table[7]));
     //if(rpm!=0){
+      //Serial.print("RPM: ");
+      //Serial.println(rpm);
       Serial.print("RPM: ");
-      Serial.println(rpm);
-      Serial.print("RPM2: ");
       Serial.println(rpm2);
    // }
     /*if(rpm>2000){
@@ -60,5 +67,35 @@ void loop(){
       digitalWrite(PIN,LOW);
    
   }*/
-  delay(200);
+
+  if(rpm2>4500){
+    digitalWrite(40,HIGH);
+    digitalWrite(41,HIGH);
+    digitalWrite(42,HIGH);
+    digitalWrite(43,HIGH);
+  }
+  else if(rpm2>4000){
+    digitalWrite(40,HIGH);
+    digitalWrite(41,HIGH);
+    digitalWrite(42,HIGH);
+    digitalWrite(43,LOW);
+  }
+  else if(rpm2>3000){
+    digitalWrite(40,HIGH);
+    digitalWrite(41,HIGH);
+    digitalWrite(42,LOW);
+    digitalWrite(43,LOW);
+  }
+  else if(rpm2>2000){
+    digitalWrite(40,HIGH);
+    digitalWrite(41,LOW);
+    digitalWrite(42,LOW);
+    digitalWrite(43,LOW);
+  }
+  else{
+    digitalWrite(40,LOW);
+    digitalWrite(41,LOW);
+    digitalWrite(42,LOW);
+    digitalWrite(43,LOW);
+  }
 }
